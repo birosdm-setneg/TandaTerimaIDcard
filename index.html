@@ -124,7 +124,7 @@
 
   <div class="nav">
     <button class="nav-btn active" onclick="nav('form')">Buat Tanda Terima</button>
-    <button class="nav-btn" onclick="nav('rekap')">Rekap Data</button>
+    <button class="nav-btn" onclick="bukaRekap()">Rekap Data &#128274;</button>
   </div>
 
   <div id="page-form" class="page active">
@@ -202,9 +202,7 @@
         </div>
       </div>
       <div class="btn-row">
-        <button onclick="window.print()">Cetak / Simpan PDF</button>
-        <button onclick="nav('rekap')">Lihat rekap →</button>
-        <button onclick="clearForm()">Buat yang baru</button>
+        <button onclick="clearForm()">Isi tanda terima baru</button>
       </div>
     </div>
   </div>
@@ -321,6 +319,16 @@ sigC.addEventListener('touchstart', e => { e.preventDefault(); drawing = true; c
 sigC.addEventListener('touchmove', e => { e.preventDefault(); if (!drawing) return; hasSig = true; const p = gp(e); ctx.lineTo(p.x, p.y); ctx.stroke(); }, { passive: false });
 sigC.addEventListener('touchend', () => drawing = false);
 function clearSig() { ctx.clearRect(0, 0, sigC.width, sigC.height); hasSig = false; }
+
+function bukaRekap() {
+  const pw = prompt('Masukkan password untuk membuka Rekap Data:');
+  if (pw === null) return;
+  if (pw === 'BiroSDM') {
+    nav('rekap');
+  } else {
+    alert('Password salah.');
+  }
+}
 
 function nav(p) {
   document.querySelectorAll('.page').forEach(x => x.classList.remove('active'));
