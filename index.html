@@ -60,6 +60,14 @@
   .item-remove { position: absolute; top: 10px; right: 10px; background: none; border: 0.5px solid var(--red-border); color: var(--red-text); border-radius: var(--radius); padding: 3px 8px; font-size: 11px; cursor: pointer; font-weight: 500; }
   .add-btn { width: 100%; padding: 10px; border: 1px dashed var(--border2); border-radius: var(--radius); background: transparent; color: var(--text2); font-size: 13px; cursor: pointer; margin-top: 6px; }
   .add-btn:hover { background: var(--bg2); }
+  .foto-upload-wrap { margin-top: 10px; }
+  .foto-label { font-size: 12px; color: var(--text2); display: block; margin-bottom: 4px; font-weight: 500; }
+  .foto-area { border: 1px dashed var(--border2); border-radius: var(--radius); padding: 12px; text-align: center; cursor: pointer; background: var(--bg); transition: background 0.12s; }
+  .foto-area:hover { background: var(--bg2); }
+  .foto-area input[type=file] { display: none; }
+  .foto-hint { font-size: 12px; color: var(--text3); }
+  .foto-preview { width: 100%; max-height: 180px; object-fit: contain; border-radius: var(--radius); display: block; margin-top: 8px; }
+  .foto-clear { font-size: 11px; color: var(--red-text); cursor: pointer; text-decoration: underline; background: none; border: none; padding: 0; margin-top: 4px; display: block; }
   .sig-wrap { border: 1px dashed var(--border2); border-radius: var(--radius); padding: 8px; background: var(--bg2); }
   canvas { display: block; touch-action: none; width: 100%; border-radius: 4px; cursor: crosshair; }
   .sig-row { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; }
@@ -276,7 +284,7 @@ function addIDCard() {
   const n = iCount;
   const d = document.createElement('div');
   d.className = 'idcard-item'; d.id = 'ic-' + n;
-  d.innerHTML = `<div class="item-num">ID card ${n}</div>${n > 1 ? `<button class="item-remove" onclick="rmIC(${n})">Hapus</button>` : ''}<div class="row1"><label>Pengambilan ID card atas nama *</label><input type="text" id="in-${n}" placeholder="Nama pemilik ID card" autocomplete="off"></div><div class="row2"><div><label>Jabatan/Bagian</label><input type="text" id="ij-${n}" placeholder="cth: Analis Kebijakan" autocomplete="off"></div><div><label>Unit Kerja</label><div id="unit-ic-${n}"></div></div></div>`;
+  d.innerHTML = `<div class="item-num">ID card ${n}</div>${n > 1 ? `<button class="item-remove" onclick="rmIC(${n})">Hapus</button>` : ''}<div class="row1"><label>Pengambilan ID card atas nama *</label><input type="text" id="in-${n}" placeholder="Nama pemilik ID card" autocomplete="off"></div><div class="row2"><div><label>Jabatan/Bagian</label><input type="text" id="ij-${n}" placeholder="cth: Analis Kebijakan" autocomplete="off"></div><div><label>Unit Kerja</label><div id="unit-ic-${n}"></div></div></div><div class="foto-upload-wrap"><span class="foto-label">Foto ID card (opsional)</span><div class="foto-area" onclick="document.getElementById('if-${n}').click()"><input type="file" id="if-${n}" accept="image/*" onchange="previewFoto(${n}, this)"><span class="foto-hint" id="fh-${n}">Klik untuk upload foto ID card</span><img id="fp-${n}" class="foto-preview" style="display:none"></div><button class="foto-clear" id="fc-${n}" style="display:none" onclick="clearFoto(${n})">Hapus foto</button></div>`;
   document.getElementById('idcard-list').appendChild(d);
   document.getElementById('unit-ic-' + n).appendChild(makeUnitSearch('ic-' + n));
 }
@@ -289,9 +297,35 @@ function getIDCards() {
     return {
       nama: document.getElementById('in-' + id)?.value.trim() || '',
       jabatan: document.getElementById('ij-' + id)?.value.trim() || '–',
-      unit: getUnitVal('ic-' + id)
+      unit: getUnitVal('ic-' + id),
+      foto: document.getElementById('fp-' + id)?.src && document.getElementById('fp-' + id).style.display !== 'none' ? document.getElementById('fp-' + id).src : null
     };
   });
+}
+
+function previewFoto(n, input) {
+  if (!input.files || !input.files[0]) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const img = document.getElementById('fp-' + n);
+    const hint = document.getElementById('fh-' + n);
+    const btn = document.getElementById('fc-' + n);
+    img.src = e.target.result;
+    img.style.display = 'block';
+    hint.style.display = 'none';
+    btn.style.display = 'block';
+  };
+  reader.readAsDataURL(input.files[0]);
+}
+
+function clearFoto(n) {
+  const img = document.getElementById('fp-' + n);
+  const hint = document.getElementById('fh-' + n);
+  const btn = document.getElementById('fc-' + n);
+  const input = document.getElementById('if-' + n);
+  img.src = ''; img.style.display = 'none';
+  hint.style.display = ''; btn.style.display = 'none';
+  if (input) input.value = '';
 }
 
 const sigC = document.getElementById('sigC');
@@ -385,10 +419,11 @@ function showReceipt(rec) {
   document.getElementById('r-idcard-list').innerHTML = rec.idcards.map(c => `
     <div class="r-idcard-item">
       <div class="r-avatar">${initials(c.nama)}</div>
-      <div>
+      <div style="flex:1">
         <div class="r-nama">${c.nama}</div>
         ${c.jabatan && c.jabatan !== '–' ? `<div class="r-unit" style="color:var(--text2);font-size:12px">${c.jabatan}</div>` : ''}
         <div class="r-unit">${c.unit !== '–' ? c.unit : '–'}</div>
+        ${c.foto ? `<img src="${c.foto}" style="max-height:120px;max-width:100%;border-radius:var(--radius);margin-top:8px;display:block;object-fit:contain">` : ''}
       </div>
     </div>
   `).join('');
