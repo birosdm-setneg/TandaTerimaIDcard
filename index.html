@@ -12,8 +12,7 @@
     --border: rgba(0,0,0,0.12); --border2: rgba(0,0,0,0.22);
     --radius: 8px; --radius-lg: 12px;
     --green-bg: #EAF3DE; --green-text: #27500A;
-    --blue-bg: #E6F1FB; --blue-text: #0C447C;
-    --blue-avatar: #B5D4F4;
+    --blue-avatar: #B5D4F4; --blue-text: #0C447C;
     --red-text: #A32D2D; --red-border: #F09595;
   }
   @media (prefers-color-scheme: dark) {
@@ -22,60 +21,55 @@
       --text: #f0efe9; --text2: #9b9b96; --text3: #6b6b67;
       --border: rgba(255,255,255,0.12); --border2: rgba(255,255,255,0.22);
       --green-bg: #173404; --green-text: #C0DD97;
-      --blue-bg: #042C53; --blue-text: #B5D4F4;
-      --blue-avatar: #0C447C;
+      --blue-avatar: #0C447C; --blue-text: #B5D4F4;
       --red-text: #F09595; --red-border: #791F1F;
     }
   }
   body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 14px; color: var(--text); background: var(--bg3); min-height: 100vh; }
-  .container { max-width: 680px; margin: 0 auto; padding: 2rem 1rem; }
-  .app-header { margin-bottom: 2rem; }
-  .app-title { font-size: 20px; font-weight: 600; color: var(--text); }
-  .app-sub { font-size: 13px; color: var(--text2); margin-top: 4px; }
-  .nav { display: flex; gap: 0; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border); }
-  .nav-btn { padding: 10px 18px; font-size: 13px; border: none; background: transparent; cursor: pointer; color: var(--text2); border-bottom: 2px solid transparent; margin-bottom: -1px; font-weight: 400; transition: color 0.15s; }
-  .nav-btn.active { color: var(--text); border-bottom: 2px solid var(--text); font-weight: 500; }
+  .container { max-width: 720px; margin: 0 auto; padding: 2rem 1rem; }
+  .app-title { font-size: 20px; font-weight: 600; margin-bottom: 4px; }
+  .app-sub { font-size: 13px; color: var(--text2); margin-bottom: 2rem; }
+  .nav { display: flex; border-bottom: 1px solid var(--border); margin-bottom: 1.5rem; }
+  .nav-btn { padding: 10px 18px; font-size: 13px; border: none; background: transparent; cursor: pointer; color: var(--text2); border-bottom: 2px solid transparent; margin-bottom: -1px; font-weight: 400; }
+  .nav-btn.active { color: var(--text); border-bottom-color: var(--text); font-weight: 500; }
   .nav-btn:hover:not(.active) { color: var(--text); }
   .page { display: none; }
   .page.active { display: block; }
-  .section-title { font-size: 15px; font-weight: 500; margin-bottom: 4px; }
-  .section-sub { font-size: 13px; color: var(--text2); margin-bottom: 1.25rem; }
+  .sec-title { font-size: 15px; font-weight: 500; margin-bottom: 4px; }
+  .sec-sub { font-size: 13px; color: var(--text2); margin-bottom: 1.25rem; }
   .card { background: var(--bg); border: 0.5px solid var(--border); border-radius: var(--radius-lg); padding: 1.25rem; margin-bottom: 1rem; }
+  .card-lbl { font-size: 11px; font-weight: 600; color: var(--text3); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1rem; }
   .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
   .row1 { margin-bottom: 12px; }
-  @media (max-width: 480px) { .row2 { grid-template-columns: 1fr; } }
+  @media (max-width: 500px) { .row2 { grid-template-columns: 1fr; } }
   label { font-size: 12px; color: var(--text2); display: block; margin-bottom: 4px; font-weight: 500; }
-  input, select, textarea {
-    width: 100%; padding: 9px 11px; font-size: 14px;
-    border: 0.5px solid var(--border2); border-radius: var(--radius);
-    background: var(--bg); color: var(--text);
-    font-family: inherit; transition: border-color 0.15s;
-    outline: none;
-  }
-  input:focus, select:focus, textarea:focus { border-color: var(--text2); }
+  input, select { width: 100%; padding: 9px 11px; font-size: 14px; border: 0.5px solid var(--border2); border-radius: var(--radius); background: var(--bg); color: var(--text); font-family: inherit; outline: none; }
+  input:focus, select:focus { border-color: var(--text2); }
+  select { cursor: pointer; }
+  .idcard-list { display: flex; flex-direction: column; gap: 10px; }
+  .idcard-item { background: var(--bg2); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 14px; position: relative; }
+  .item-num { font-size: 11px; font-weight: 600; color: var(--text3); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 10px; }
+  .item-remove { position: absolute; top: 10px; right: 10px; background: none; border: 0.5px solid var(--red-border); color: var(--red-text); border-radius: var(--radius); padding: 3px 8px; font-size: 11px; cursor: pointer; font-weight: 500; }
+  .add-btn { width: 100%; padding: 10px; border: 1px dashed var(--border2); border-radius: var(--radius); background: transparent; color: var(--text2); font-size: 13px; cursor: pointer; margin-top: 6px; }
+  .add-btn:hover { background: var(--bg2); }
   .sig-wrap { border: 1px dashed var(--border2); border-radius: var(--radius); padding: 8px; background: var(--bg2); }
   canvas { display: block; touch-action: none; width: 100%; border-radius: 4px; cursor: crosshair; }
-  .sig-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; }
+  .sig-row { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; }
   .sig-hint { font-size: 12px; color: var(--text3); }
-  .sig-clear { font-size: 12px; color: var(--text2); cursor: pointer; text-decoration: underline; background: none; border: none; padding: 0; color: var(--text2); }
+  .sig-clear { font-size: 12px; color: var(--text2); cursor: pointer; text-decoration: underline; background: none; border: none; padding: 0; }
   .btn-row { display: flex; gap: 10px; margin-bottom: 1rem; flex-wrap: wrap; }
-  button {
-    padding: 9px 16px; border-radius: var(--radius); font-size: 13px;
-    cursor: pointer; font-weight: 500; border: 0.5px solid var(--border2);
-    background: transparent; color: var(--text); font-family: inherit;
-    transition: background 0.15s, transform 0.1s;
-  }
+  button { padding: 9px 16px; border-radius: var(--radius); font-size: 13px; cursor: pointer; font-weight: 500; border: 0.5px solid var(--border2); background: transparent; color: var(--text); font-family: inherit; transition: background 0.12s, transform 0.1s; }
   button:hover { background: var(--bg2); }
   button:active { transform: scale(0.98); }
   button.primary { background: var(--text); color: var(--bg); border-color: var(--text); }
-  button.primary:hover { opacity: 0.88; background: var(--text); }
+  button.primary:hover { opacity: 0.85; background: var(--text); }
+  button.sm { padding: 4px 9px; font-size: 12px; }
   button.danger { color: var(--red-text); border-color: var(--red-border); }
-  button.sm { padding: 5px 10px; font-size: 12px; }
   .pill { display: inline-block; font-size: 11px; padding: 2px 9px; border-radius: 99px; font-weight: 500; }
   .pill.ok { background: var(--green-bg); color: var(--green-text); }
-  .stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 1.5rem; }
+  .stat-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 1.5rem; }
   .stat { background: var(--bg2); border-radius: var(--radius); padding: 1rem; }
-  .stat-label { font-size: 12px; color: var(--text2); margin-bottom: 4px; }
+  .stat-lbl { font-size: 12px; color: var(--text2); margin-bottom: 4px; }
   .stat-val { font-size: 22px; font-weight: 600; }
   .list-card { background: var(--bg); border: 0.5px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 1rem; }
   .list-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 0.5px solid var(--border); }
@@ -83,46 +77,42 @@
   .avatar { width: 38px; height: 38px; border-radius: 50%; background: var(--blue-avatar); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; color: var(--blue-text); flex-shrink: 0; }
   .list-info { flex: 1; min-width: 0; }
   .list-name { font-weight: 500; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .list-meta { font-size: 12px; color: var(--text2); margin-top: 2px; }
+  .list-meta { font-size: 12px; color: var(--text2); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .list-right { text-align: right; flex-shrink: 0; }
   .list-date { font-size: 11px; color: var(--text3); margin-top: 3px; }
   .list-no { font-size: 11px; color: var(--text3); }
   .empty { text-align: center; padding: 3rem 0; color: var(--text2); font-size: 13px; }
-  .search-wrap { margin-bottom: 1rem; }
   .receipt-bg { background: var(--bg2); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 1rem; }
   .receipt { background: var(--bg); border: 0.5px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem; }
-  .r-header { display: flex; align-items: center; gap: 14px; margin-bottom: 1.25rem; padding-bottom: 1rem; border-bottom: 0.5px solid var(--border); }
-  .r-avatar { width: 48px; height: 48px; border-radius: 50%; background: var(--blue-avatar); display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 600; color: var(--blue-text); flex-shrink: 0; }
-  .r-name { font-size: 16px; font-weight: 600; }
-  .r-dept { font-size: 13px; color: var(--text2); margin-top: 3px; }
-  .r-table { width: 100%; font-size: 13px; border-collapse: collapse; }
+  .r-section-lbl { font-size: 11px; font-weight: 600; color: var(--text3); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 10px; }
+  .r-table { width: 100%; font-size: 13px; border-collapse: collapse; margin-bottom: 1rem; }
   .r-table td { padding: 5px 0; vertical-align: top; }
-  .r-table td:first-child { color: var(--text2); width: 150px; }
+  .r-table td:first-child { color: var(--text2); width: 180px; }
   .r-table td:last-child { font-weight: 500; }
+  .r-divider { border: none; border-top: 0.5px solid var(--border); margin: 1rem 0; }
+  .r-idcard-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 1rem; }
+  .r-idcard-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; background: var(--bg2); border-radius: var(--radius); }
+  .r-avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--blue-avatar); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; color: var(--blue-text); flex-shrink: 0; }
+  .r-nama { font-weight: 500; font-size: 14px; }
+  .r-unit { font-size: 12px; color: var(--text2); margin-top: 1px; }
   .sig-section { margin-top: 1rem; padding-top: 1rem; border-top: 0.5px solid var(--border); }
-  .sig-label { font-size: 12px; color: var(--text2); margin-bottom: 6px; }
-  .alert { background: var(--bg2); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 10px 14px; font-size: 13px; color: var(--text2); margin-bottom: 1rem; }
-  .detail-modal-bg { display: none; background: rgba(0,0,0,0.45); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 1rem; }
-  .detail-modal-bg.show { display: block; }
-
+  .sig-lbl { font-size: 12px; color: var(--text2); margin-bottom: 6px; }
   @media print {
     body { background: white; }
     .container { padding: 0; max-width: 100%; }
-    .nav, .btn-row, .app-header, #page-rekap, .sig-actions, .search-wrap { display: none !important; }
+    .nav, .btn-row, .app-title, .app-sub, #page-rekap, .sig-row { display: none !important; }
+    .page.active .card { display: none; }
+    #receipt-out { display: block !important; }
     .receipt-bg { background: white; padding: 0; }
     .receipt { border: 1px solid #ccc; }
-    #page-form { display: block !important; }
-    .card { display: none; }
-    #receipt-out { display: block !important; }
+    .r-idcard-item { background: #f5f5f5; }
   }
 </style>
 </head>
 <body>
 <div class="container">
-  <div class="app-header">
-    <div class="app-title">Tanda Terima ID Card</div>
-    <div class="app-sub">Sistem pencatatan pengambilan ID card pegawai</div>
-  </div>
+  <div class="app-title">Tanda Terima ID Card</div>
+  <div class="app-sub">Sistem pencatatan pengambilan ID card pegawai</div>
 
   <div class="nav">
     <button class="nav-btn active" onclick="nav('form')">Buat Tanda Terima</button>
@@ -130,21 +120,28 @@
   </div>
 
   <div id="page-form" class="page active">
-    <div class="section-title">Data penerima</div>
-    <p class="section-sub">Isi data pegawai yang mengambil ID card, kemudian minta tanda tangan</p>
+    <div class="sec-title">Buat tanda terima baru</div>
+    <p class="sec-sub">Isi data ID card yang diambil, bisa lebih dari satu sekaligus</p>
 
     <div class="card">
+      <div class="card-lbl">ID card yang diambil</div>
+      <div class="idcard-list" id="idcard-list"></div>
+      <button class="add-btn" onclick="addIDCard()">+ Tambah ID card</button>
+    </div>
+
+    <div class="card">
+      <div class="card-lbl">Diambilkan oleh</div>
       <div class="row2">
-        <div><label>Nama lengkap *</label><input id="f-nama" type="text" placeholder="Budi Santoso" autocomplete="off"></div>
-        <div><label>NIK / ID pegawai *</label><input id="f-nik" type="text" placeholder="EMP-0042" autocomplete="off"></div>
+        <div><label>Nama pengambil *</label><input id="f-pengambil" type="text" placeholder="Budi Santoso" autocomplete="off"></div>
+        <div><label>Unit Kerja pengambil</label><select id="f-unit-pengambil"><option value="">-- Pilih unit kerja --</option></select></div>
       </div>
-      <div class="row2">
-        <div><label>Departemen</label><input id="f-dept" type="text" placeholder="Marketing" autocomplete="off"></div>
-        <div><label>Jabatan</label><input id="f-jabatan" type="text" placeholder="Staff" autocomplete="off"></div>
-      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-lbl">Info penyerahan</div>
       <div class="row2">
         <div><label>Tanggal pengambilan</label><input id="f-tgl" type="date"></div>
-        <div><label>Diserahkan oleh</label><input id="f-petugas" type="text" placeholder="Admin HRD – Sari" autocomplete="off"></div>
+        <div><label>Diserahkan oleh</label><input id="f-petugas" type="text" placeholder="cth: Admin HRD – Sari" autocomplete="off"></div>
       </div>
       <div class="row1">
         <label>Catatan (opsional)</label>
@@ -153,13 +150,11 @@
     </div>
 
     <div class="card">
-      <label style="margin-bottom:10px">Tanda tangan penerima</label>
-      <div class="sig-wrap">
-        <canvas id="sigC" height="130"></canvas>
-      </div>
-      <div class="sig-actions">
-        <span class="sig-hint">Tanda tangan di area abu-abu di atas</span>
-        <button class="sig-clear" onclick="clearSig()">Hapus tanda tangan</button>
+      <div class="card-lbl">Tanda tangan pengambil</div>
+      <div class="sig-wrap"><canvas id="sigC" height="130"></canvas></div>
+      <div class="sig-row">
+        <span class="sig-hint">Tanda tangan di kotak abu-abu di atas</span>
+        <button class="sig-clear" onclick="clearSig()">Hapus</button>
       </div>
     </div>
 
@@ -169,203 +164,223 @@
     </div>
 
     <div id="receipt-out" style="display:none">
-      <div class="section-title" style="margin-bottom:1rem">Tanda terima berhasil dibuat</div>
+      <div class="sec-title" style="margin-bottom:1rem">Tanda terima berhasil dibuat</div>
       <div class="receipt-bg">
         <div class="receipt" id="receipt-card">
-          <div class="r-header">
-            <div class="r-avatar" id="r-inisial"></div>
-            <div style="flex:1">
-              <div class="r-name" id="r-nama"></div>
-              <div class="r-dept" id="r-dept-jab"></div>
-            </div>
-            <span class="pill ok">Sudah diterima</span>
-          </div>
+          <div class="r-section-lbl">ID card yang diambil</div>
+          <div class="r-idcard-list" id="r-idcard-list"></div>
+
+          <hr class="r-divider">
+
+          <div class="r-section-lbl">Diambilkan oleh</div>
           <table class="r-table">
-            <tr><td>NIK / ID pegawai</td><td id="r-nik"></td></tr>
-            <tr><td>Departemen</td><td id="r-dept-td"></td></tr>
-            <tr><td>Jabatan</td><td id="r-jabatan-td"></td></tr>
+            <tr><td>Nama pengambil</td><td id="r-pengambil"></td></tr>
+            <tr><td>Unit Kerja</td><td id="r-unit-pengambil" style="font-size:12px;font-weight:400;color:var(--text2)"></td></tr>
+          </table>
+
+          <hr class="r-divider">
+
+          <table class="r-table">
             <tr><td>Tanggal pengambilan</td><td id="r-tgl"></td></tr>
             <tr><td>Diserahkan oleh</td><td id="r-petugas"></td></tr>
             <tr><td>No. tanda terima</td><td id="r-no"></td></tr>
             <tr id="r-cat-row"><td>Catatan</td><td id="r-cat"></td></tr>
           </table>
+
           <div class="sig-section" id="r-sig-wrap">
-            <div class="sig-label">Tanda tangan penerima</div>
+            <div class="sig-lbl">Tanda tangan pengambil</div>
             <img id="r-sig-img" src="" style="max-height:90px;border-radius:4px;display:block">
           </div>
         </div>
       </div>
       <div class="btn-row">
         <button onclick="window.print()">Cetak / Simpan PDF</button>
-        <button onclick="nav('rekap')">Lihat rekap data →</button>
-        <button onclick="clearForm();document.getElementById('receipt-out').style.display='none'">Buat yang baru</button>
+        <button onclick="nav('rekap')">Lihat rekap →</button>
+        <button onclick="clearForm()">Buat yang baru</button>
       </div>
     </div>
   </div>
 
   <div id="page-rekap" class="page">
     <div class="stat-grid">
-      <div class="stat"><div class="stat-label">Total penerima</div><div class="stat-val" id="s-total">0</div></div>
-      <div class="stat"><div class="stat-label">Hari ini</div><div class="stat-val" id="s-today">0</div></div>
-      <div class="stat"><div class="stat-label">Departemen</div><div class="stat-val" id="s-dept">0</div></div>
+      <div class="stat"><div class="stat-lbl">Total transaksi</div><div class="stat-val" id="s-total">0</div></div>
+      <div class="stat"><div class="stat-lbl">ID card tersalurkan</div><div class="stat-val" id="s-cards">0</div></div>
+      <div class="stat"><div class="stat-lbl">Hari ini</div><div class="stat-val" id="s-today">0</div></div>
     </div>
-
-    <div class="search-wrap">
-      <input id="search" type="text" placeholder="Cari nama, NIK, atau departemen..." oninput="renderList()">
-    </div>
-
+    <div style="margin-bottom:1rem"><input id="search" type="text" placeholder="Cari nama penerima, pengambil, atau unit kerja..." oninput="renderList()"></div>
     <div class="btn-row">
       <button onclick="exportCSV()">Export ke Excel / CSV</button>
       <button onclick="exportJSON()">Backup data (JSON)</button>
     </div>
-
     <div id="list-container"></div>
   </div>
 </div>
 
 <script>
+const UNITS = ["Biro Perencanaan, Sekretariat Kementerian","Biro Keuangan, Sekretariat Kementerian","Biro Tata Usaha dan Dukungan Pimpinan, Sekretariat Kementerian","Biro Kerja Sama Teknik Luar Negeri, Sekretariat Kementerian","Biro Hubungan Masyarakat, Sekretariat Kementerian","Biro Pengelolaan Barang Milik Negara dan Pengadaan Barang dan Jasa, Sekretariat Kementerian","Biro Umum, Sekretariat Kementerian","Biro Administrasi, Deputi Bidang Administrasi dan Pengelolaan Istana, Sekretariat Presiden","Biro Pengelolaan Istana, Deputi Bidang Administrasi dan Pengelolaan Istana, Sekretariat Presiden","Biro Umum, Deputi Bidang Administrasi dan Pengelolaan Istana, Sekretariat Presiden","Biro Protokol, Deputi Bidang Protokol, Pers, dan Media, Sekretariat Presiden","Biro Pers, Media, dan Informasi, Deputi Bidang Protokol, Pers, dan Media, Sekretariat Presiden","Istana Kepresidenan Bogor, Sekretariat Presiden","Istana Kepresidenan Cipanas, Sekretariat Presiden","Istana Kepresidenan Yogyakarta, Sekretariat Presiden","Istana Kepresidenan Tampaksiring, Sekretariat Presiden","Asisten Deputi Ekonomi, Keuangan, dan Transformasi Digital, Sekretariat Wakil Presiden","Asisten Deputi Industri, Perdagangan, Pariwisata, dan Ekonomi Kreatif, Sekretariat Wakil Presiden","Asisten Deputi Infrastruktur, Sumber Daya Alam, dan Pembangunan Kewilayahan, Sekretariat Wakil Presiden","Asisten Deputi Pengentasan Kemiskinan dan Pembangunan Desa, Sekretariat Wakil Presiden","Asisten Deputi Kesehatan, Gizi, dan Pembangunan Keluarga, Sekretariat Wakil Presiden","Asisten Deputi Pemberdayaan Masyarakat dan Penanggulangan Bencana, Sekretariat Wakil Presiden","Asisten Deputi Pendidikan, Agama, Kebudayaan, Pemuda, dan Olahraga, Sekretariat Wakil Presiden","Asisten Deputi Hubungan Luar Negeri dan Pertahanan, Sekretariat Wakil Presiden","Asisten Deputi Politik, Keamanan, Hukum, dan Hak Asasi Manusia, Sekretariat Wakil Presiden","Asisten Deputi Tata Kelola Pemerintahan dan Percepatan Pembangunan Daerah, Sekretariat Wakil Presiden","Biro Tata Usaha dan Sumber Daya Manusia, Deputi Bidang Administrasi, Sekretariat Wakil Presiden","Biro Perencanaan dan Keuangan, Deputi Bidang Administrasi, Sekretariat Wakil Presiden","Biro Umum, Deputi Bidang Administrasi, Sekretariat Wakil Presiden","Biro Protokol dan Kerumahtanggaan, Deputi Bidang Administrasi, Sekretariat Wakil Presiden","Biro Pers, Media, dan Informasi, Deputi Bidang Administrasi, Sekretariat Wakil Presiden","Biro Personel TNI dan Kepolisian, Sekretariat Militer Presiden","Biro Pengamanan, Sekretariat Militer Presiden","Biro Gelar, Tanda Jasa, dan Tanda Kehormatan, Sekretariat Militer Presiden","Biro Umum, Sekretariat Militer Presiden","Asisten Deputi Politik, Pemerintahan Dalam Negeri dan Aparatur Negara, Sekretariat Dukungan Kabinet","Asisten Deputi Hukum, HAM, Imigrasi, dan Pemasyarakatan, Sekretariat Dukungan Kabinet","Asisten Deputi Hubungan Luar Negeri, Komunikasi, dan Digital, Sekretariat Dukungan Kabinet","Asisten Deputi Pertahanan dan Keamanan, Sekretariat Dukungan Kabinet","Asisten Deputi Energi, Sumber Daya Mineral, dan Pariwisata, Sekretariat Dukungan Kabinet","Asisten Deputi Ketenagakerjaan, Investasi, dan Hilirisasi, Sekretariat Dukungan Kabinet","Asisten Deputi Perdagangan dan Perindustrian, Sekretariat Dukungan Kabinet","Asisten Deputi Perencanaan Pembangunan, Fiskal, dan Pengembangan BUMN, Sekretariat Dukungan Kabinet","Asisten Deputi Kesehatan, Kependudukan, Pemuda, dan Olahraga, Sekretariat Dukungan Kabinet","Asisten Deputi Agama, Kebudayaan, Pendidikan, Sains, dan Teknologi, Sekretariat Dukungan Kabinet","Asisten Deputi Sosial, Pekerja Migran, Pemberdayaan Perempuan, dan Perlindungan Anak, Sekretariat Dukungan Kabinet","Asisten Deputi Desa, Pembangunan Daerah Tertinggal, Koperasi, dan UMKM, Sekretariat Dukungan Kabinet","Asisten Deputi Kelautan, Perikanan, dan Kehutanan, Sekretariat Dukungan Kabinet","Asisten Deputi Agraria, Tata Ruang, Transmigrasi, dan Lingkungan Hidup, Sekretariat Dukungan Kabinet","Asisten Deputi Pekerjaan Umum, Perumahan, dan Perhubungan, Sekretariat Dukungan Kabinet","Asisten Deputi Pertanian, Pangan, dan Gizi, Sekretariat Dukungan Kabinet","Asisten Deputi Penyelenggaraan Persidangan, Sekretariat Dukungan Kabinet","Asisten Deputi Pelaporan Persidangan, Sekretariat Dukungan Kabinet","Asisten Deputi Naskah dan Penerjemahan, Sekretariat Dukungan Kabinet","Asisten Deputi Dokumentasi, Diseminasi, dan Arsip, Sekretariat Dukungan Kabinet","Biro Pengelolaan Anggaran, SDM, dan Kinerja, Sekretariat Dukungan Kabinet","Biro Dukungan Aparatur dan Kelembagaan, Sekretariat Dukungan Kabinet","Biro Umum, Sekretariat Dukungan Kabinet","Asisten Deputi Keamanan, Kelembagaan, dan Aparatur, Deputi Bidang Perundang-undangan dan Administrasi Hukum","Asisten Deputi Politik, Hukum, dan Pemerintahan Dalam Negeri, Deputi Bidang Perundang-undangan dan Administrasi Hukum","Asisten Deputi Perekonomian, Deputi Bidang Perundang-undangan dan Administrasi Hukum","Asisten Deputi Kesejahteraan Rakyat, Deputi Bidang Perundang-undangan dan Administrasi Hukum","Asisten Deputi Administrasi Hukum, Deputi Bidang Perundang-undangan dan Administrasi Hukum","Asisten Deputi Hubungan Lembaga Negara dan Lembaga Pemerintah, Deputi Bidang Hubungan Kelembagaan","Asisten Deputi Hubungan Lembaga Non Pemerintah, Deputi Bidang Hubungan Kelembagaan","Asisten Deputi Pengaduan Masyarakat, Deputi Bidang Hubungan Kelembagaan","Asisten Deputi Kajian Strategis dan Pengelolaan Kemitraan, Deputi Bidang Hubungan Kelembagaan","Biro Administrasi Pejabat Negara, Deputi Bidang Administrasi Aparatur","Biro Administrasi Pejabat Pemerintahan, Deputi Bidang Administrasi Aparatur","Biro Sumber Daya Manusia, Deputi Bidang Administrasi Aparatur","Biro Organisasi, Tata Laksana, Hukum, dan Reformasi Birokrasi, Deputi Bidang Administrasi Aparatur","Pusat Pengembangan dan Layanan Sistem Informasi, Badan Teknologi, Data, dan Informasi","Pusat Infrastruktur Sistem Jaringan dan Keamanan Siber, Badan Teknologi, Data, dan Informasi","Pusat Manajemen Data dan Transformasi Digital, Badan Teknologi, Data, dan Informasi","Inspektorat, Kementerian Sekretariat Negara","Pusat Pembinaan Penerjemah","Pusat Pembinaan Analis Kerja Sama","Biro Data dan Informasi, Sekretariat Dewan Pertimbangan Presiden","Biro Umum, Sekretariat Dewan Pertimbangan Presiden","Sekretariat Kantor Staf Presiden","Sekretariat Kantor Komunikasi Kepresidenan","Sekretariat Dewan Ekonomi Nasional","Sekretariat Badan Pengendalian Pembangunan dan Investigasi Khusus","Pusat Pengelolaan Komplek Gelora Bung Karno","PPK Kemayoran","Pusat Pengembangan Kompetensi Aparatur Sipil Negara"];
+
+function fillSelect(el) {
+  el.innerHTML = '<option value="">-- Pilih unit kerja --</option>' + UNITS.map(u => `<option value="${u}">${u}</option>`).join('');
+}
+fillSelect(document.getElementById('f-unit-pengambil'));
+
 let records = [];
-try { records = JSON.parse(localStorage.getItem('idcard_v2') || '[]'); } catch(e) {}
+try { records = JSON.parse(localStorage.getItem('idcard_v4') || '[]'); } catch(e) {}
+let iCount = 0;
+
+function addIDCard() {
+  iCount++;
+  const n = iCount;
+  const d = document.createElement('div');
+  d.className = 'idcard-item'; d.id = 'ic-' + n;
+  const sel = document.createElement('select'); sel.id = 'iu-' + n;
+  fillSelect(sel);
+  d.innerHTML = `<div class="item-num">ID card ${n}</div>${n > 1 ? `<button class="item-remove" onclick="rmIC(${n})">Hapus</button>` : ''}<div class="row2"><div><label>Pengambilan ID card atas nama *</label><input type="text" id="in-${n}" placeholder="Nama pemilik ID card" autocomplete="off"></div><div><label>Unit Kerja</label></div></div>`;
+  d.querySelector('.row2 div:last-child').appendChild(sel);
+  document.getElementById('idcard-list').appendChild(d);
+}
+
+function rmIC(n) { const e = document.getElementById('ic-' + n); if (e) e.remove(); }
+
+function getIDCards() {
+  return [...document.querySelectorAll('.idcard-item')].map(el => {
+    const id = el.id.replace('ic-', '');
+    return {
+      nama: document.getElementById('in-' + id)?.value.trim() || '',
+      unit: document.getElementById('iu-' + id)?.value || '–'
+    };
+  });
+}
 
 const sigC = document.getElementById('sigC');
 const ctx = sigC.getContext('2d');
-sigC.width = sigC.offsetWidth || 600;
-ctx.strokeStyle = '#1a1a18';
-ctx.lineWidth = 2.5;
-ctx.lineCap = 'round';
-ctx.lineJoin = 'round';
+sigC.width = sigC.offsetWidth || 660;
+ctx.strokeStyle = '#1a1a18'; ctx.lineWidth = 2.5; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
 let drawing = false, hasSig = false;
-
 window.addEventListener('resize', () => {
-  const imgData = ctx.getImageData(0,0,sigC.width,sigC.height);
-  sigC.width = sigC.offsetWidth || 600;
-  ctx.strokeStyle = '#1a1a18';
-  ctx.lineWidth = 2.5; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
-  ctx.putImageData(imgData, 0, 0);
+  const img = ctx.getImageData(0, 0, sigC.width, sigC.height);
+  sigC.width = sigC.offsetWidth || 660;
+  ctx.strokeStyle = '#1a1a18'; ctx.lineWidth = 2.5; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  ctx.putImageData(img, 0, 0);
 });
-
 function gp(e) {
   const r = sigC.getBoundingClientRect();
   const sx = sigC.width / r.width, sy = sigC.height / r.height;
-  if (e.touches) return { x:(e.touches[0].clientX-r.left)*sx, y:(e.touches[0].clientY-r.top)*sy };
-  return { x:(e.clientX-r.left)*sx, y:(e.clientY-r.top)*sy };
+  if (e.touches) return { x: (e.touches[0].clientX - r.left) * sx, y: (e.touches[0].clientY - r.top) * sy };
+  return { x: (e.clientX - r.left) * sx, y: (e.clientY - r.top) * sy };
 }
-sigC.addEventListener('mousedown', e => { drawing=true; const p=gp(e); ctx.beginPath(); ctx.moveTo(p.x,p.y); });
-sigC.addEventListener('mousemove', e => { if(!drawing) return; hasSig=true; const p=gp(e); ctx.lineTo(p.x,p.y); ctx.stroke(); });
-sigC.addEventListener('mouseup', () => drawing=false);
-sigC.addEventListener('mouseleave', () => drawing=false);
-sigC.addEventListener('touchstart', e => { e.preventDefault(); drawing=true; const p=gp(e); ctx.beginPath(); ctx.moveTo(p.x,p.y); }, {passive:false});
-sigC.addEventListener('touchmove', e => { e.preventDefault(); if(!drawing) return; hasSig=true; const p=gp(e); ctx.lineTo(p.x,p.y); ctx.stroke(); }, {passive:false});
-sigC.addEventListener('touchend', () => drawing=false);
-
-function clearSig() { ctx.clearRect(0,0,sigC.width,sigC.height); hasSig=false; }
+sigC.addEventListener('mousedown', e => { drawing = true; const p = gp(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); });
+sigC.addEventListener('mousemove', e => { if (!drawing) return; hasSig = true; const p = gp(e); ctx.lineTo(p.x, p.y); ctx.stroke(); });
+sigC.addEventListener('mouseup', () => drawing = false);
+sigC.addEventListener('mouseleave', () => drawing = false);
+sigC.addEventListener('touchstart', e => { e.preventDefault(); drawing = true; const p = gp(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); }, { passive: false });
+sigC.addEventListener('touchmove', e => { e.preventDefault(); if (!drawing) return; hasSig = true; const p = gp(e); ctx.lineTo(p.x, p.y); ctx.stroke(); }, { passive: false });
+sigC.addEventListener('touchend', () => drawing = false);
+function clearSig() { ctx.clearRect(0, 0, sigC.width, sigC.height); hasSig = false; }
 
 function nav(p) {
   document.querySelectorAll('.page').forEach(x => x.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(x => x.classList.remove('active'));
-  document.getElementById('page-'+p).classList.add('active');
-  document.querySelectorAll('.nav-btn')[p==='form'?0:1].classList.add('active');
-  if (p==='rekap') { updateStats(); renderList(); }
+  document.getElementById('page-' + p).classList.add('active');
+  document.querySelectorAll('.nav-btn')[p === 'form' ? 0 : 1].classList.add('active');
+  if (p === 'rekap') { updateStats(); renderList(); }
 }
 
 function clearForm() {
-  ['f-nama','f-nik','f-dept','f-jabatan','f-petugas','f-catatan'].forEach(id => document.getElementById(id).value='');
+  ['f-pengambil', 'f-petugas', 'f-catatan'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('f-unit-pengambil').value = '';
   document.getElementById('f-tgl').valueAsDate = new Date();
-  clearSig();
-  document.getElementById('receipt-out').style.display='none';
+  document.getElementById('idcard-list').innerHTML = '';
+  iCount = 0; addIDCard(); clearSig();
+  document.getElementById('receipt-out').style.display = 'none';
 }
 
-function initials(n) {
-  return n.trim().split(/\s+/).slice(0,2).map(w => w[0]?.toUpperCase()||'').join('');
-}
-
-function fmtDate(v) {
-  if (!v) return '–';
-  const d = new Date(v+'T00:00:00');
-  return d.toLocaleDateString('id-ID', {day:'numeric', month:'long', year:'numeric'});
-}
-
-function genNo() {
-  const ts = Date.now().toString(36).toUpperCase();
-  return 'TT-' + ts.slice(-6);
-}
-
-function saveRecords() {
-  try { localStorage.setItem('idcard_v2', JSON.stringify(records)); } catch(e) {}
-}
+function initials(n) { return n.trim().split(/\s+/).slice(0, 2).map(w => w[0]?.toUpperCase() || '').join(''); }
+function fmtDate(v) { if (!v) return '–'; return new Date(v + 'T00:00:00').toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }); }
+function genNo() { return 'TT-' + Date.now().toString(36).toUpperCase().slice(-6); }
+function save() { try { localStorage.setItem('idcard_v4', JSON.stringify(records)); } catch(e) {} }
 
 function simpan() {
-  const nama = document.getElementById('f-nama').value.trim();
-  const nik = document.getElementById('f-nik').value.trim();
-  if (!nama) { alert('Nama lengkap wajib diisi.'); return; }
-  if (!nik) { alert('NIK / ID Pegawai wajib diisi.'); return; }
+  const pengambil = document.getElementById('f-pengambil').value.trim();
+  const unitPengambil = document.getElementById('f-unit-pengambil').value;
+  const tgl = document.getElementById('f-tgl').value || new Date().toISOString().slice(0, 10);
+  const petugas = document.getElementById('f-petugas').value.trim() || '–';
+  const catatan = document.getElementById('f-catatan').value.trim();
+  const idcards = getIDCards();
+
+  if (!pengambil) { alert('Nama pengambil wajib diisi.'); return; }
+  for (const c of idcards) { if (!c.nama) { alert('Nama pemilik ID card wajib diisi semua.'); return; } }
+  if (!idcards.length) { alert('Tambahkan minimal satu ID card.'); return; }
+
+  const sig = hasSig ? sigC.toDataURL('image/png') : null;
   const rec = {
     id: Date.now(),
     no: genNo(),
-    nama, nik,
-    dept: document.getElementById('f-dept').value.trim() || '–',
-    jabatan: document.getElementById('f-jabatan').value.trim() || '–',
-    tgl: document.getElementById('f-tgl').value || new Date().toISOString().slice(0,10),
-    petugas: document.getElementById('f-petugas').value.trim() || '–',
-    catatan: document.getElementById('f-catatan').value.trim(),
-    sig: hasSig ? sigC.toDataURL('image/png') : null,
+    idcards,
+    pengambil,
+    unitPengambil: unitPengambil || '–',
+    tgl, petugas, catatan, sig,
     createdAt: new Date().toISOString()
   };
   records.unshift(rec);
-  saveRecords();
+  save();
   showReceipt(rec);
 }
 
 function showReceipt(rec) {
-  document.getElementById('r-inisial').textContent = initials(rec.nama);
-  document.getElementById('r-nama').textContent = rec.nama;
-  document.getElementById('r-dept-jab').textContent = [rec.dept, rec.jabatan].filter(x=>x&&x!=='–').join(' · ');
-  document.getElementById('r-nik').textContent = rec.nik;
-  document.getElementById('r-dept-td').textContent = rec.dept;
-  document.getElementById('r-jabatan-td').textContent = rec.jabatan;
+  document.getElementById('r-idcard-list').innerHTML = rec.idcards.map(c => `
+    <div class="r-idcard-item">
+      <div class="r-avatar">${initials(c.nama)}</div>
+      <div>
+        <div class="r-nama">${c.nama}</div>
+        <div class="r-unit">${c.unit !== '–' ? c.unit : '–'}</div>
+      </div>
+    </div>
+  `).join('');
+
+  document.getElementById('r-pengambil').textContent = rec.pengambil;
+  document.getElementById('r-unit-pengambil').textContent = rec.unitPengambil !== '–' ? rec.unitPengambil : '–';
   document.getElementById('r-tgl').textContent = fmtDate(rec.tgl);
   document.getElementById('r-petugas').textContent = rec.petugas;
   document.getElementById('r-no').textContent = rec.no;
+
   const catRow = document.getElementById('r-cat-row');
-  if (rec.catatan) { document.getElementById('r-cat').textContent=rec.catatan; catRow.style.display=''; }
-  else { catRow.style.display='none'; }
+  if (rec.catatan) { document.getElementById('r-cat').textContent = rec.catatan; catRow.style.display = ''; }
+  else { catRow.style.display = 'none'; }
+
   const sigWrap = document.getElementById('r-sig-wrap');
   const sigImg = document.getElementById('r-sig-img');
-  if (rec.sig) { sigImg.src=rec.sig; sigWrap.style.display='block'; }
-  else { sigWrap.style.display='none'; }
-  document.getElementById('receipt-out').style.display='block';
-  document.getElementById('receipt-out').scrollIntoView({behavior:'smooth', block:'start'});
+  if (rec.sig) { sigImg.src = rec.sig; sigWrap.style.display = 'block'; }
+  else { sigWrap.style.display = 'none'; }
+
+  document.getElementById('receipt-out').style.display = 'block';
+  document.getElementById('receipt-out').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 function updateStats() {
   document.getElementById('s-total').textContent = records.length;
-  const today = new Date().toISOString().slice(0,10);
-  document.getElementById('s-today').textContent = records.filter(r=>r.tgl===today).length;
-  const depts = new Set(records.filter(r=>r.dept&&r.dept!=='–').map(r=>r.dept));
-  document.getElementById('s-dept').textContent = depts.size;
+  document.getElementById('s-cards').textContent = records.reduce((a, r) => a + r.idcards.length, 0);
+  const today = new Date().toISOString().slice(0, 10);
+  document.getElementById('s-today').textContent = records.filter(r => r.tgl === today).length;
 }
 
 function renderList() {
-  const q = (document.getElementById('search').value||'').toLowerCase();
+  const q = (document.getElementById('search').value || '').toLowerCase();
   const filtered = records.filter(r =>
-    r.nama.toLowerCase().includes(q) ||
-    r.nik.toLowerCase().includes(q) ||
-    r.dept.toLowerCase().includes(q)
+    r.pengambil.toLowerCase().includes(q) ||
+    r.idcards.some(c => c.nama.toLowerCase().includes(q) || c.unit.toLowerCase().includes(q))
   );
   const con = document.getElementById('list-container');
-  if (!filtered.length) {
-    con.innerHTML = '<div class="empty">Belum ada data tanda terima yang tersimpan.</div>';
-    return;
-  }
+  if (!filtered.length) { con.innerHTML = '<div class="empty">Belum ada data tanda terima.</div>'; return; }
   con.innerHTML = '<div class="list-card">' + filtered.map(r => `
     <div class="list-item">
-      <div class="avatar">${initials(r.nama)}</div>
+      <div class="avatar">${initials(r.pengambil)}</div>
       <div class="list-info">
-        <div class="list-name">${r.nama}</div>
-        <div class="list-meta">${r.nik} &middot; ${r.dept}</div>
+        <div class="list-name">${r.pengambil}</div>
+        <div class="list-meta">${r.idcards.length} ID card · ${r.idcards.map(c => c.nama).join(', ')}</div>
       </div>
       <div class="list-right">
-        <span class="pill ok">Diterima</span>
+        <span class="pill ok">Diambil</span>
         <div class="list-date">${fmtDate(r.tgl)}</div>
         <div class="list-no">${r.no}</div>
       </div>
@@ -375,35 +390,36 @@ function renderList() {
 }
 
 function hapus(id) {
-  if (!confirm('Hapus data tanda terima ini?')) return;
+  if (!confirm('Hapus data ini?')) return;
   records = records.filter(r => r.id !== id);
-  saveRecords(); updateStats(); renderList();
+  save(); updateStats(); renderList();
 }
 
 function exportCSV() {
-  if (!records.length) { alert('Belum ada data untuk diekspor.'); return; }
-  const header = 'No. Tanda Terima,Nama,NIK,Departemen,Jabatan,Tanggal Pengambilan,Diserahkan Oleh,Catatan,Waktu Dibuat\n';
-  const rows = records.map(r =>
-    [r.no,r.nama,r.nik,r.dept,r.jabatan,fmtDate(r.tgl),r.petugas,r.catatan||'',r.createdAt||'']
-    .map(v => '"'+String(v).replace(/"/g,'""')+'"').join(',')
-  ).join('\n');
-  const blob = new Blob(['\uFEFF'+header+rows], {type:'text/csv;charset=utf-8'});
+  if (!records.length) { alert('Belum ada data.'); return; }
+  const rows = [];
+  rows.push(['No. Tanda Terima', 'Nama Pemilik ID Card', 'Unit Kerja Pemilik', 'Diambilkan Oleh', 'Unit Kerja Pengambil', 'Tanggal Pengambilan', 'Diserahkan Oleh', 'Catatan'].map(v => '"' + v + '"').join(','));
+  for (const r of records) {
+    for (const c of r.idcards) {
+      rows.push([r.no, c.nama, c.unit, r.pengambil, r.unitPengambil, fmtDate(r.tgl), r.petugas, r.catatan || ''].map(v => '"' + String(v).replace(/"/g, '""') + '"').join(','));
+    }
+  }
   const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'rekap-idcard-'+new Date().toISOString().slice(0,10)+'.csv';
+  a.href = URL.createObjectURL(new Blob(['\uFEFF' + rows.join('\n')], { type: 'text/csv;charset=utf-8' }));
+  a.download = 'rekap-idcard-' + new Date().toISOString().slice(0, 10) + '.csv';
   a.click();
 }
 
 function exportJSON() {
-  if (!records.length) { alert('Belum ada data untuk di-backup.'); return; }
-  const blob = new Blob([JSON.stringify(records, null, 2)], {type:'application/json'});
+  if (!records.length) { alert('Belum ada data.'); return; }
   const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'backup-idcard-'+new Date().toISOString().slice(0,10)+'.json';
+  a.href = URL.createObjectURL(new Blob([JSON.stringify(records, null, 2)], { type: 'application/json' }));
+  a.download = 'backup-idcard-' + new Date().toISOString().slice(0, 10) + '.json';
   a.click();
 }
 
 document.getElementById('f-tgl').valueAsDate = new Date();
+addIDCard();
 </script>
 </body>
 </html>
