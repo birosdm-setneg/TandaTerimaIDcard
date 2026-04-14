@@ -46,6 +46,14 @@
   input, select { width: 100%; padding: 9px 11px; font-size: 14px; border: 0.5px solid var(--border2); border-radius: var(--radius); background: var(--bg); color: var(--text); font-family: inherit; outline: none; }
   input:focus, select:focus { border-color: var(--text2); }
   select { cursor: pointer; }
+  .unit-wrap { position: relative; }
+  .unit-search { width: 100%; padding: 9px 11px; font-size: 14px; border: 0.5px solid var(--border2); border-radius: var(--radius); background: var(--bg); color: var(--text); font-family: inherit; outline: none; }
+  .unit-search:focus { border-color: var(--text2); }
+  .unit-dropdown { position: absolute; top: 100%; left: 0; right: 0; background: var(--bg); border: 0.5px solid var(--border2); border-radius: var(--radius); max-height: 220px; overflow-y: auto; z-index: 100; display: none; margin-top: 2px; }
+  .unit-dropdown.open { display: block; }
+  .unit-opt { padding: 9px 12px; font-size: 13px; cursor: pointer; color: var(--text); line-height: 1.4; }
+  .unit-opt:hover, .unit-opt.active { background: var(--bg2); }
+  .unit-opt.placeholder { color: var(--text3); }
   .idcard-list { display: flex; flex-direction: column; gap: 10px; }
   .idcard-item { background: var(--bg2); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 14px; position: relative; }
   .item-num { font-size: 11px; font-weight: 600; color: var(--text3); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 10px; }
@@ -132,8 +140,8 @@
     <div class="card">
       <div class="card-lbl">Diambilkan oleh</div>
       <div class="row2">
-        <div><label>Nama pengambil *</label><input id="f-pengambil" type="text" placeholder="Budi Santoso" autocomplete="off"></div>
-        <div><label>Unit Kerja pengambil</label><select id="f-unit-pengambil"><option value="">-- Pilih unit kerja --</option></select></div>
+        <div><label>Nama pengambil *</label><input id="f-pengambil" type="text" placeholder="" autocomplete="off"></div>
+        <div><label>Unit Kerja pengambil</label><div id="unit-pengambil-wrap"></div></div>
       </div>
     </div>
 
@@ -141,7 +149,7 @@
       <div class="card-lbl">Info penyerahan</div>
       <div class="row2">
         <div><label>Tanggal pengambilan</label><input id="f-tgl" type="date"></div>
-        <div><label>Diserahkan oleh</label><input id="f-petugas" type="text" placeholder="cth: Admin HRD – Sari" autocomplete="off"></div>
+        <div><label>Diserahkan oleh</label><input id="f-petugas" type="text" placeholder="cth: SDM – Elsa" autocomplete="off"></div>
       </div>
       <div class="row1">
         <label>Catatan (opsional)</label>
@@ -219,10 +227,47 @@
 <script>
 const UNITS = ["Biro Perencanaan, Sekretariat Kementerian","Biro Keuangan, Sekretariat Kementerian","Biro Tata Usaha dan Dukungan Pimpinan, Sekretariat Kementerian","Biro Kerja Sama Teknik Luar Negeri, Sekretariat Kementerian","Biro Hubungan Masyarakat, Sekretariat Kementerian","Biro Pengelolaan Barang Milik Negara dan Pengadaan Barang dan Jasa, Sekretariat Kementerian","Biro Umum, Sekretariat Kementerian","Biro Administrasi, Deputi Bidang Administrasi dan Pengelolaan Istana, Sekretariat Presiden","Biro Pengelolaan Istana, Deputi Bidang Administrasi dan Pengelolaan Istana, Sekretariat Presiden","Biro Umum, Deputi Bidang Administrasi dan Pengelolaan Istana, Sekretariat Presiden","Biro Protokol, Deputi Bidang Protokol, Pers, dan Media, Sekretariat Presiden","Biro Pers, Media, dan Informasi, Deputi Bidang Protokol, Pers, dan Media, Sekretariat Presiden","Istana Kepresidenan Bogor, Sekretariat Presiden","Istana Kepresidenan Cipanas, Sekretariat Presiden","Istana Kepresidenan Yogyakarta, Sekretariat Presiden","Istana Kepresidenan Tampaksiring, Sekretariat Presiden","Asisten Deputi Ekonomi, Keuangan, dan Transformasi Digital, Sekretariat Wakil Presiden","Asisten Deputi Industri, Perdagangan, Pariwisata, dan Ekonomi Kreatif, Sekretariat Wakil Presiden","Asisten Deputi Infrastruktur, Sumber Daya Alam, dan Pembangunan Kewilayahan, Sekretariat Wakil Presiden","Asisten Deputi Pengentasan Kemiskinan dan Pembangunan Desa, Sekretariat Wakil Presiden","Asisten Deputi Kesehatan, Gizi, dan Pembangunan Keluarga, Sekretariat Wakil Presiden","Asisten Deputi Pemberdayaan Masyarakat dan Penanggulangan Bencana, Sekretariat Wakil Presiden","Asisten Deputi Pendidikan, Agama, Kebudayaan, Pemuda, dan Olahraga, Sekretariat Wakil Presiden","Asisten Deputi Hubungan Luar Negeri dan Pertahanan, Sekretariat Wakil Presiden","Asisten Deputi Politik, Keamanan, Hukum, dan Hak Asasi Manusia, Sekretariat Wakil Presiden","Asisten Deputi Tata Kelola Pemerintahan dan Percepatan Pembangunan Daerah, Sekretariat Wakil Presiden","Biro Tata Usaha dan Sumber Daya Manusia, Deputi Bidang Administrasi, Sekretariat Wakil Presiden","Biro Perencanaan dan Keuangan, Deputi Bidang Administrasi, Sekretariat Wakil Presiden","Biro Umum, Deputi Bidang Administrasi, Sekretariat Wakil Presiden","Biro Protokol dan Kerumahtanggaan, Deputi Bidang Administrasi, Sekretariat Wakil Presiden","Biro Pers, Media, dan Informasi, Deputi Bidang Administrasi, Sekretariat Wakil Presiden","Biro Personel TNI dan Kepolisian, Sekretariat Militer Presiden","Biro Pengamanan, Sekretariat Militer Presiden","Biro Gelar, Tanda Jasa, dan Tanda Kehormatan, Sekretariat Militer Presiden","Biro Umum, Sekretariat Militer Presiden","Asisten Deputi Politik, Pemerintahan Dalam Negeri dan Aparatur Negara, Sekretariat Dukungan Kabinet","Asisten Deputi Hukum, HAM, Imigrasi, dan Pemasyarakatan, Sekretariat Dukungan Kabinet","Asisten Deputi Hubungan Luar Negeri, Komunikasi, dan Digital, Sekretariat Dukungan Kabinet","Asisten Deputi Pertahanan dan Keamanan, Sekretariat Dukungan Kabinet","Asisten Deputi Energi, Sumber Daya Mineral, dan Pariwisata, Sekretariat Dukungan Kabinet","Asisten Deputi Ketenagakerjaan, Investasi, dan Hilirisasi, Sekretariat Dukungan Kabinet","Asisten Deputi Perdagangan dan Perindustrian, Sekretariat Dukungan Kabinet","Asisten Deputi Perencanaan Pembangunan, Fiskal, dan Pengembangan BUMN, Sekretariat Dukungan Kabinet","Asisten Deputi Kesehatan, Kependudukan, Pemuda, dan Olahraga, Sekretariat Dukungan Kabinet","Asisten Deputi Agama, Kebudayaan, Pendidikan, Sains, dan Teknologi, Sekretariat Dukungan Kabinet","Asisten Deputi Sosial, Pekerja Migran, Pemberdayaan Perempuan, dan Perlindungan Anak, Sekretariat Dukungan Kabinet","Asisten Deputi Desa, Pembangunan Daerah Tertinggal, Koperasi, dan UMKM, Sekretariat Dukungan Kabinet","Asisten Deputi Kelautan, Perikanan, dan Kehutanan, Sekretariat Dukungan Kabinet","Asisten Deputi Agraria, Tata Ruang, Transmigrasi, dan Lingkungan Hidup, Sekretariat Dukungan Kabinet","Asisten Deputi Pekerjaan Umum, Perumahan, dan Perhubungan, Sekretariat Dukungan Kabinet","Asisten Deputi Pertanian, Pangan, dan Gizi, Sekretariat Dukungan Kabinet","Asisten Deputi Penyelenggaraan Persidangan, Sekretariat Dukungan Kabinet","Asisten Deputi Pelaporan Persidangan, Sekretariat Dukungan Kabinet","Asisten Deputi Naskah dan Penerjemahan, Sekretariat Dukungan Kabinet","Asisten Deputi Dokumentasi, Diseminasi, dan Arsip, Sekretariat Dukungan Kabinet","Biro Pengelolaan Anggaran, SDM, dan Kinerja, Sekretariat Dukungan Kabinet","Biro Dukungan Aparatur dan Kelembagaan, Sekretariat Dukungan Kabinet","Biro Umum, Sekretariat Dukungan Kabinet","Asisten Deputi Keamanan, Kelembagaan, dan Aparatur, Deputi Bidang Perundang-undangan dan Administrasi Hukum","Asisten Deputi Politik, Hukum, dan Pemerintahan Dalam Negeri, Deputi Bidang Perundang-undangan dan Administrasi Hukum","Asisten Deputi Perekonomian, Deputi Bidang Perundang-undangan dan Administrasi Hukum","Asisten Deputi Kesejahteraan Rakyat, Deputi Bidang Perundang-undangan dan Administrasi Hukum","Asisten Deputi Administrasi Hukum, Deputi Bidang Perundang-undangan dan Administrasi Hukum","Asisten Deputi Hubungan Lembaga Negara dan Lembaga Pemerintah, Deputi Bidang Hubungan Kelembagaan","Asisten Deputi Hubungan Lembaga Non Pemerintah, Deputi Bidang Hubungan Kelembagaan","Asisten Deputi Pengaduan Masyarakat, Deputi Bidang Hubungan Kelembagaan","Asisten Deputi Kajian Strategis dan Pengelolaan Kemitraan, Deputi Bidang Hubungan Kelembagaan","Biro Administrasi Pejabat Negara, Deputi Bidang Administrasi Aparatur","Biro Administrasi Pejabat Pemerintahan, Deputi Bidang Administrasi Aparatur","Biro Sumber Daya Manusia, Deputi Bidang Administrasi Aparatur","Biro Organisasi, Tata Laksana, Hukum, dan Reformasi Birokrasi, Deputi Bidang Administrasi Aparatur","Pusat Pengembangan dan Layanan Sistem Informasi, Badan Teknologi, Data, dan Informasi","Pusat Infrastruktur Sistem Jaringan dan Keamanan Siber, Badan Teknologi, Data, dan Informasi","Pusat Manajemen Data dan Transformasi Digital, Badan Teknologi, Data, dan Informasi","Inspektorat, Kementerian Sekretariat Negara","Pusat Pembinaan Penerjemah","Pusat Pembinaan Analis Kerja Sama","Biro Data dan Informasi, Sekretariat Dewan Pertimbangan Presiden","Biro Umum, Sekretariat Dewan Pertimbangan Presiden","Sekretariat Kantor Staf Presiden","Sekretariat Badan Komunikasi Pemerintah","Sekretariat Dewan Ekonomi Nasional","Sekretariat Badan Pengendalian Pembangunan dan Investigasi Khusus","Pusat Pengelolaan Komplek Gelora Bung Karno","PPK Kemayoran","Pusat Pengembangan Kompetensi Aparatur Sipil Negara"];
 
-function fillSelect(el) {
-  el.innerHTML = '<option value="">-- Pilih unit kerja --</option>' + UNITS.map(u => `<option value="${u}">${u}</option>`).join('');
+function makeUnitSearch(id, initialVal) {
+  const wrap = document.createElement('div');
+  wrap.className = 'unit-wrap';
+  wrap.id = 'uw-' + id;
+  wrap.innerHTML = `
+    <input type="text" class="unit-search" id="us-${id}" placeholder="Ketik untuk cari unit kerja..." autocomplete="off" value="${initialVal || ''}">
+    <div class="unit-dropdown" id="ud-${id}"></div>
+    <input type="hidden" id="uv-${id}" value="${initialVal || ''}">
+  `;
+  setTimeout(() => initUnitSearch(id), 0);
+  return wrap;
 }
-fillSelect(document.getElementById('f-unit-pengambil'));
+
+function initUnitSearch(id) {
+  const inp = document.getElementById('us-' + id);
+  const drop = document.getElementById('ud-' + id);
+  const hidden = document.getElementById('uv-' + id);
+  if (!inp) return;
+
+  function renderOpts(q) {
+    const filtered = q ? UNITS.filter(u => u.toLowerCase().includes(q.toLowerCase())) : UNITS;
+    drop.innerHTML = '<div class="unit-opt placeholder" data-val="">-- Pilih unit kerja --</div>' +
+      filtered.map(u => `<div class="unit-opt" data-val="${u}">${u}</div>`).join('');
+    drop.querySelectorAll('.unit-opt').forEach(opt => {
+      opt.addEventListener('mousedown', e => {
+        e.preventDefault();
+        const val = opt.dataset.val;
+        hidden.value = val;
+        inp.value = val;
+        drop.classList.remove('open');
+      });
+    });
+  }
+
+  inp.addEventListener('focus', () => { renderOpts(inp.value); drop.classList.add('open'); });
+  inp.addEventListener('input', () => { hidden.value = ''; renderOpts(inp.value); drop.classList.add('open'); });
+  inp.addEventListener('blur', () => { setTimeout(() => drop.classList.remove('open'), 150); });
+}
+
+function getUnitVal(id) { return document.getElementById('uv-' + id)?.value || '–'; }
+function fillSelect(el) {}
 
 let records = [];
 try { records = JSON.parse(localStorage.getItem('idcard_v4') || '[]'); } catch(e) {}
@@ -233,11 +278,9 @@ function addIDCard() {
   const n = iCount;
   const d = document.createElement('div');
   d.className = 'idcard-item'; d.id = 'ic-' + n;
-  const sel = document.createElement('select'); sel.id = 'iu-' + n;
-  fillSelect(sel);
-  d.innerHTML = `<div class="item-num">ID card ${n}</div>${n > 1 ? `<button class="item-remove" onclick="rmIC(${n})">Hapus</button>` : ''}<div class="row1"><label>Pengambilan ID card atas nama *</label><input type="text" id="in-${n}" placeholder="Nama pemilik ID card" autocomplete="off"></div><div class="row2"><div><label>Jabatan/Bagian</label><input type="text" id="ij-${n}" placeholder="cth: Analis Kebijakan" autocomplete="off"></div><div><label>Unit Kerja</label></div></div>`;
-  d.querySelector('.row2 div:last-child').appendChild(sel);
+  d.innerHTML = `<div class="item-num">ID card ${n}</div>${n > 1 ? `<button class="item-remove" onclick="rmIC(${n})">Hapus</button>` : ''}<div class="row1"><label>Pengambilan ID card atas nama *</label><input type="text" id="in-${n}" placeholder="Nama pemilik ID card" autocomplete="off"></div><div class="row2"><div><label>Jabatan/Bagian</label><input type="text" id="ij-${n}" placeholder="cth: Analis Kebijakan" autocomplete="off"></div><div><label>Unit Kerja</label><div id="unit-ic-${n}"></div></div></div>`;
   document.getElementById('idcard-list').appendChild(d);
+  document.getElementById('unit-ic-' + n).appendChild(makeUnitSearch('ic-' + n));
 }
 
 function rmIC(n) { const e = document.getElementById('ic-' + n); if (e) e.remove(); }
@@ -248,7 +291,7 @@ function getIDCards() {
     return {
       nama: document.getElementById('in-' + id)?.value.trim() || '',
       jabatan: document.getElementById('ij-' + id)?.value.trim() || '–',
-      unit: document.getElementById('iu-' + id)?.value || '–'
+      unit: getUnitVal('ic-' + id)
     };
   });
 }
@@ -289,7 +332,9 @@ function nav(p) {
 
 function clearForm() {
   ['f-pengambil', 'f-petugas', 'f-catatan'].forEach(id => document.getElementById(id).value = '');
-  document.getElementById('f-unit-pengambil').value = '';
+  const us = document.getElementById('us-pengambil');
+  const uv = document.getElementById('uv-pengambil');
+  if (us) us.value = ''; if (uv) uv.value = '';
   document.getElementById('f-tgl').valueAsDate = new Date();
   document.getElementById('idcard-list').innerHTML = '';
   iCount = 0; addIDCard(); clearSig();
@@ -303,7 +348,7 @@ function save() { try { localStorage.setItem('idcard_v4', JSON.stringify(records
 
 function simpan() {
   const pengambil = document.getElementById('f-pengambil').value.trim();
-  const unitPengambil = document.getElementById('f-unit-pengambil').value;
+  const unitPengambil = getUnitVal('pengambil');
   const tgl = document.getElementById('f-tgl').value || new Date().toISOString().slice(0, 10);
   const petugas = document.getElementById('f-petugas').value.trim() || '–';
   const catatan = document.getElementById('f-catatan').value.trim();
@@ -421,6 +466,7 @@ function exportJSON() {
 }
 
 document.getElementById('f-tgl').valueAsDate = new Date();
+document.getElementById('unit-pengambil-wrap').appendChild(makeUnitSearch('pengambil'));
 addIDCard();
 </script>
 </body>
