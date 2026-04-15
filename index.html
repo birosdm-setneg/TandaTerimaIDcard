@@ -404,7 +404,7 @@ function genNo() { return 'TT-' + Date.now().toString(36).toUpperCase().slice(-6
 function save() { try { localStorage.setItem('idcard_v4', JSON.stringify(records)); } catch(e) {} }
 
 const CLOUDINARY_CLOUD = 'dgfbrj8hd';
-const CLOUDINARY_PRESET = 'ml_default';
+const CLOUDINARY_PRESET = 'idcardupload';
 
 async function uploadCloudinary(base64data) {
   if (!base64data) return null;
