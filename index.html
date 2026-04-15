@@ -403,6 +403,17 @@ function fmtDate(v) { if (!v) return '–'; return new Date(v + 'T00:00:00').toL
 function genNo() { return 'TT-' + Date.now().toString(36).toUpperCase().slice(-6); }
 function save() { try { localStorage.setItem('idcard_v4', JSON.stringify(records)); } catch(e) {} }
 
+const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbx4_KGzqDcYfWb6aczDOcVXKo2Dc1_HLXpYhdhbGqkhZd-j1xGGYuUf3OWMaGd_gj-4/exec';
+
+function kirimKeSheets(rec) {
+  fetch(SHEETS_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(rec)
+  }).catch(e => console.log('Gagal kirim ke Sheets:', e));
+}
+
 function simpan() {
   const pengambil = document.getElementById('f-pengambil').value.trim();
   const unitPengambil = getUnitVal('pengambil');
@@ -419,7 +430,7 @@ function simpan() {
   const rec = {
     id: Date.now(),
     no: genNo(),
-    idcards,
+    idcards: idcards.map(c => ({ nama: c.nama, jabatan: c.jabatan, unit: c.unit })),
     pengambil,
     unitPengambil: unitPengambil || '–',
     tgl, petugas, catatan, sig,
@@ -427,7 +438,8 @@ function simpan() {
   };
   records.unshift(rec);
   save();
-  showReceipt(rec);
+  kirimKeSheets(rec);
+  showReceipt({ ...rec, idcards: idcards });
 }
 
 function showReceipt(rec) {
