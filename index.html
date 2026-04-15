@@ -403,18 +403,38 @@ function fmtDate(v) { if (!v) return '–'; return new Date(v + 'T00:00:00').toL
 function genNo() { return 'TT-' + Date.now().toString(36).toUpperCase().slice(-6); }
 function save() { try { localStorage.setItem('idcard_v4', JSON.stringify(records)); } catch(e) {} }
 
-const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbx4_KGzqDcYfWb6aczDOcVXKo2Dc1_HLXpYhdhbGqkhZd-j1xGGYuUf3OWMaGd_gj-4/exec';
+const CLOUDINARY_CLOUD = 'dgfbrj8hd';
+const CLOUDINARY_PRESET = 'ml_default';
+
+async function uploadCloudinary(base64data) {
+  if (!base64data) return null;
+  try {
+    const formData = new FormData();
+    formData.append('file', base64data);
+    formData.append('upload_preset', CLOUDINARY_PRESET);
+    const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`, {
+      method: 'POST',
+      body: formData
+    });
+    const json = await res.json();
+    return json.secure_url || null;
+  } catch(e) {
+    console.log('Gagal upload Cloudinary:', e);
+    return null;
+  }
+}
 
 function kirimKeSheets(rec) {
-  const payload = JSON.stringify(rec);
   fetch(SHEETS_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'text/plain' },
-    body: payload
+    body: JSON.stringify(rec)
   }).catch(e => console.log('Gagal kirim ke Sheets:', e));
 }
 
-function simpan() {
+const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbx4_KGzqDcYfWb6aczDOcVXKo2Dc1_HLXpYhdhbGqkhZd-j1xGGYuUf3OWMaGd_gj-4/exec';
+
+async function simpan() {
   const pengambil = document.getElementById('f-pengambil').value.trim();
   const unitPengambil = getUnitVal('pengambil');
   const tgl = document.getElementById('f-tgl').value || new Date().toISOString().slice(0, 10);
@@ -426,20 +446,40 @@ function simpan() {
   for (const c of idcards) { if (!c.nama) { alert('Nama pemilik ID card wajib diisi semua.'); return; } }
   if (!idcards.length) { alert('Tambahkan minimal satu ID card.'); return; }
 
-  const sig = hasSig ? sigC.toDataURL('image/png') : null;
+  const btn = document.querySelector('button.primary');
+  btn.textContent = 'Menyimpan...'; btn.disabled = true;
+
+  const sigBase64 = hasSig ? sigC.toDataURL('image/png') : null;
+  const sigUrl = await uploadCloudinary(sigBase64);
+
+  const idcardsWithUrl = await Promise.all(idcards.map(async c => ({
+    nama: c.nama, jabatan: c.jabatan, unit: c.unit,
+    fotoUrl: c.foto ? await uploadCloudinary(c.foto) : null
+  })));
+
   const rec = {
     id: Date.now(),
     no: genNo(),
-    idcards: idcards.map(c => ({ nama: c.nama, jabatan: c.jabatan, unit: c.unit })),
+    idcards: idcardsWithUrl,
     pengambil,
     unitPengambil: unitPengambil || '–',
-    tgl, petugas, catatan, sig,
+    tgl, petugas, catatan,
+    sigUrl,
     createdAt: new Date().toISOString()
   };
-  records.unshift(rec);
+
+  const localRec = { ...rec, sig: sigBase64, idcards: idcards };
+  records.unshift(localRec);
   save();
-  kirimKeSheets(rec);
-  showReceipt({ ...rec, idcards: idcards });
+
+  fetch(SHEETS_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain' },
+    body: JSON.stringify(rec)
+  }).catch(e => console.log('Gagal kirim ke Sheets:', e));
+
+  btn.textContent = 'Simpan & Tampilkan Tanda Terima →'; btn.disabled = false;
+  showReceipt(localRec);
 }
 
 function showReceipt(rec) {
