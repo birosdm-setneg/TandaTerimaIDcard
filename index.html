@@ -406,11 +406,11 @@ function save() { try { localStorage.setItem('idcard_v4', JSON.stringify(records
 const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbx4_KGzqDcYfWb6aczDOcVXKo2Dc1_HLXpYhdhbGqkhZd-j1xGGYuUf3OWMaGd_gj-4/exec';
 
 function kirimKeSheets(rec) {
+  const payload = JSON.stringify(rec);
   fetch(SHEETS_URL, {
     method: 'POST',
-    mode: 'no-cors',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(rec)
+    headers: { 'Content-Type': 'text/plain' },
+    body: payload
   }).catch(e => console.log('Gagal kirim ke Sheets:', e));
 }
 
