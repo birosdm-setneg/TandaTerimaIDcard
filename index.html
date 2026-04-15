@@ -331,14 +331,28 @@ function clearFoto(n) {
 
 const sigC = document.getElementById('sigC');
 const ctx = sigC.getContext('2d');
-sigC.width = sigC.offsetWidth || 660;
-ctx.strokeStyle = '#1a1a18'; ctx.lineWidth = 2.5; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+const isDark = () => window.matchMedia('(prefers-color-scheme: dark)').matches;
+function getSigColor() { return isDark() ? '#f0efe9' : '#1a1a18'; }
+function getSigBg() { return isDark() ? '#2c2c2a' : '#ffffff'; }
+
+function initCanvas() {
+  sigC.width = sigC.offsetWidth || 660;
+  ctx.fillStyle = getSigBg();
+  ctx.fillRect(0, 0, sigC.width, sigC.height);
+  ctx.strokeStyle = getSigColor();
+  ctx.lineWidth = 2.5; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+}
+initCanvas();
+
 let drawing = false, hasSig = false;
 window.addEventListener('resize', () => {
   const img = ctx.getImageData(0, 0, sigC.width, sigC.height);
-  sigC.width = sigC.offsetWidth || 660;
-  ctx.strokeStyle = '#1a1a18'; ctx.lineWidth = 2.5; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  initCanvas();
   ctx.putImageData(img, 0, 0);
+});
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+  if (!hasSig) { initCanvas(); }
+  else { ctx.strokeStyle = getSigColor(); }
 });
 function gp(e) {
   const r = sigC.getBoundingClientRect();
@@ -353,7 +367,7 @@ sigC.addEventListener('mouseleave', () => drawing = false);
 sigC.addEventListener('touchstart', e => { e.preventDefault(); drawing = true; const p = gp(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); }, { passive: false });
 sigC.addEventListener('touchmove', e => { e.preventDefault(); if (!drawing) return; hasSig = true; const p = gp(e); ctx.lineTo(p.x, p.y); ctx.stroke(); }, { passive: false });
 sigC.addEventListener('touchend', () => drawing = false);
-function clearSig() { ctx.clearRect(0, 0, sigC.width, sigC.height); hasSig = false; }
+function clearSig() { hasSig = false; initCanvas(); }
 
 function bukaRekap() {
   const pw = prompt('Masukkan password untuk membuka Rekap Data:');
