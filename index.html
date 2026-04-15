@@ -225,6 +225,7 @@
     <div class="btn-row">
       <button onclick="exportCSV()">Export ke Excel / CSV</button>
       <button onclick="exportJSON()">Backup data (JSON)</button>
+      <button onclick="exportPDFRekap()">Export PDF Rekap</button>
     </div>
     <div id="list-container"></div>
   </div>
@@ -506,6 +507,133 @@ function exportJSON() {
   a.href = URL.createObjectURL(new Blob([JSON.stringify(records, null, 2)], { type: 'application/json' }));
   a.download = 'backup-idcard-' + new Date().toISOString().slice(0, 10) + '.json';
   a.click();
+}
+
+function exportPDFRekap() {
+  if (!records.length) { alert('Belum ada data.'); return; }
+
+  const tgl = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+
+  let html = `
+    <html><head><meta charset="UTF-8">
+    <style>
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      body { font-family: Arial, sans-serif; font-size: 11px; color: #1a1a18; padding: 28px; }
+      h1 { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+      .sub { font-size: 11px; color: #6b6b67; margin-bottom: 20px; }
+      table { width: 100%; border-collapse: collapse; font-size: 10px; }
+      th { background: #f0efe9; padding: 7px 8px; text-align: left; font-weight: 700; border-bottom: 1px solid #ccc; }
+      td { padding: 6px 8px; border-bottom: 0.5px solid #e5e5e0; vertical-align: top; }
+      .no { color: #9b9b96; font-size: 9px; }
+      .unit { color: #6b6b67; font-size: 9px; }
+      .page-break { page-break-before: always; }
+      .detail-page { padding: 28px 0; }
+      .detail-header { border-bottom: 1px solid #e5e5e0; padding-bottom: 14px; margin-bottom: 16px; }
+      .detail-title { font-size: 14px; font-weight: 700; margin-bottom: 2px; }
+      .detail-sub { font-size: 10px; color: #6b6b67; }
+      .detail-section-lbl { font-size: 9px; font-weight: 700; color: #9b9b96; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; margin-top: 14px; }
+      .idcard-row { display: flex; gap: 12px; align-items: flex-start; padding: 10px; background: #f7f6f3; border-radius: 6px; margin-bottom: 8px; }
+      .idcard-avatar { width: 36px; height: 36px; border-radius: 50%; background: #B5D4F4; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: #0C447C; flex-shrink: 0; }
+      .idcard-info { flex: 1; }
+      .idcard-nama { font-weight: 700; font-size: 11px; }
+      .idcard-meta { font-size: 9px; color: #6b6b67; margin-top: 2px; }
+      .idcard-foto { max-height: 100px; max-width: 140px; border-radius: 4px; object-fit: contain; margin-top: 6px; display: block; }
+      .detail-table { width: 100%; font-size: 10px; border-collapse: collapse; }
+      .detail-table td { padding: 4px 0; vertical-align: top; }
+      .detail-table td:first-child { color: #6b6b67; width: 140px; }
+      .detail-table td:last-child { font-weight: 600; }
+      .divider { border: none; border-top: 0.5px solid #e5e5e0; margin: 14px 0; }
+      .sig-img { max-height: 70px; border-radius: 4px; display: block; margin-top: 6px; }
+      .pill { background: #EAF3DE; color: #27500A; padding: 2px 8px; border-radius: 99px; font-size: 9px; font-weight: 700; }
+      @media print {
+        body { padding: 0; }
+        .detail-page { padding: 20px; }
+      }
+    </style></head><body>
+
+    <h1>Rekap Tanda Terima ID Card</h1>
+    <div class="sub">Dicetak pada ${tgl} &nbsp;·&nbsp; Total ${records.reduce((a,r)=>a+r.idcards.length,0)} ID card &nbsp;·&nbsp; ${records.length} transaksi</div>
+
+    <table>
+      <thead><tr>
+        <th style="width:60px">No. TT</th>
+        <th>Nama Pemilik ID Card</th>
+        <th>Jabatan/Bagian</th>
+        <th>Unit Kerja</th>
+        <th>Diambilkan Oleh</th>
+        <th style="width:90px">Tgl Pengambilan</th>
+        <th>Diserahkan Oleh</th>
+      </tr></thead>
+      <tbody>`;
+
+  for (const r of records) {
+    const rowspan = r.idcards.length;
+    r.idcards.forEach((c, i) => {
+      html += `<tr>
+        ${i === 0 ? `<td rowspan="${rowspan}"><span class="no">${r.no}</span></td>` : ''}
+        <td><strong>${c.nama}</strong></td>
+        <td>${c.jabatan !== '–' ? c.jabatan : ''}</td>
+        <td><span class="unit">${c.unit !== '–' ? c.unit : '–'}</span></td>
+        ${i === 0 ? `<td rowspan="${rowspan}">${r.pengambil}<br><span class="unit">${r.unitPengambil !== '–' ? r.unitPengambil : ''}</span></td>` : ''}
+        ${i === 0 ? `<td rowspan="${rowspan}">${fmtDate(r.tgl)}</td>` : ''}
+        ${i === 0 ? `<td rowspan="${rowspan}">${r.petugas}</td>` : ''}
+      </tr>`;
+    });
+  }
+
+  html += `</tbody></table>`;
+
+  for (const r of records) {
+    html += `<div class="page-break"></div><div class="detail-page">
+      <div class="detail-header">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+          <div>
+            <div class="detail-title">Tanda Terima ID Card</div>
+            <div class="detail-sub">${r.no} &nbsp;·&nbsp; ${fmtDate(r.tgl)}</div>
+          </div>
+          <span class="pill">Sudah diterima</span>
+        </div>
+      </div>
+
+      <div class="detail-section-lbl">ID card yang diambil</div>
+      ${r.idcards.map(c => `
+        <div class="idcard-row">
+          <div class="idcard-avatar">${initials(c.nama)}</div>
+          <div class="idcard-info">
+            <div class="idcard-nama">${c.nama}</div>
+            ${c.jabatan && c.jabatan !== '–' ? `<div class="idcard-meta">${c.jabatan}</div>` : ''}
+            <div class="idcard-meta">${c.unit !== '–' ? c.unit : '–'}</div>
+            ${c.foto ? `<img src="${c.foto}" class="idcard-foto">` : ''}
+          </div>
+        </div>
+      `).join('')}
+
+      <hr class="divider">
+      <div class="detail-section-lbl">Diambilkan oleh</div>
+      <table class="detail-table">
+        <tr><td>Nama pengambil</td><td>${r.pengambil}</td></tr>
+        <tr><td>Unit Kerja</td><td style="font-size:9px;font-weight:400;color:#6b6b67">${r.unitPengambil !== '–' ? r.unitPengambil : '–'}</td></tr>
+      </table>
+
+      <hr class="divider">
+      <table class="detail-table">
+        <tr><td>Tanggal pengambilan</td><td>${fmtDate(r.tgl)}</td></tr>
+        <tr><td>Diserahkan oleh</td><td>${r.petugas}</td></tr>
+        <tr><td>No. tanda terima</td><td>${r.no}</td></tr>
+        ${r.catatan ? `<tr><td>Catatan</td><td>${r.catatan}</td></tr>` : ''}
+      </table>
+
+      ${r.sig ? `<hr class="divider"><div class="detail-section-lbl">Tanda tangan pengambil</div><img src="${r.sig}" class="sig-img">` : ''}
+    </div>`;
+  }
+
+  html += `</body></html>`;
+
+  const win = window.open('', '_blank');
+  win.document.write(html);
+  win.document.close();
+  win.focus();
+  setTimeout(() => { win.print(); }, 800);
 }
 
 document.getElementById('f-tgl').valueAsDate = new Date();
